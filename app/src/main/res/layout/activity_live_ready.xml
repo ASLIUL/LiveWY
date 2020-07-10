@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="data"
+            type="com.yb.livewy.vm.LiveReadyViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.yb.livewy.view.LiveTitleBar
+            android:id="@+id/liveTitleBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/limit_size_50dp"
+            app:centreText="@string/broadcast_live"
+            app:centreType="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:leftType="1"
+            app:rightType="0"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/add_cover"
+            android:layout_width="@dimen/limit_size_100dp"
+            android:layout_height="@dimen/limit_size_100dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_add_black"
+            app:bl_corners_radius="@dimen/limit_size_5dp"
+            app:bl_stroke_color="@color/theme_color_bili"
+            app:bl_stroke_width="@dimen/limit_size_1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.099"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/add_cover_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/limit_size_20dp"
+            android:text="@string/upload_live_cover"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_cover"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="@dimen/limit_size_300dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_cover"
+            app:layout_constraintVertical_bias="0.1"
+            app:bl_corners_radius="@dimen/limit_size_2dp"
+            app:bl_solid_color="@color/login_et_bg"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/limit_size_20dp"
+                android:text="@string/room_title"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/font_size_20sp" />
+
+            <EditText
+                android:id="@+id/room_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={data.roomTitle}"
+                android:layout_marginLeft="@dimen/limit_size_10dp"
+                android:background="@null"
+                android:textSize="@dimen/font_size_20sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/start_live"
+            android:layout_width="@dimen/limit_size_240dp"
+            android:layout_height="@dimen/limit_size_40dp"
+            android:text="@string/start_live"
+            android:textColor="@color/white"
+            app:bl_corners_radius="@dimen/limit_size_20dp"
+            app:bl_solid_color="@color/theme_color_bili"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.827"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:layout_width="@dimen/limit_size_300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/limit_size_40dp"
+            android:layout_marginRight="@dimen/limit_size_40dp"
+            android:text="@string/live_agreement"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_live"
+            app:layout_constraintVertical_bias="0.914"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/share_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/start_live"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:layout_constraintVertical_bias="0.928" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

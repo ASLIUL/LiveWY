@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/reversal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/limit_size_25dp"
+                android:layout_height="@dimen/limit_size_25dp"
+                android:src="@drawable/ic_reversal_white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/reversal"
+                android:textSize="@dimen/font_size_10sp"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/limit_size_25dp"
+                android:layout_height="@dimen/limit_size_25dp"
+                android:src="@drawable/ic_filter_white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/filter"
+                android:textSize="@dimen/font_size_10sp"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/beauty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/limit_size_25dp"
+                android:layout_height="@dimen/limit_size_25dp"
+                android:src="@drawable/ic_beauty_white_white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/beauty_white"
+                android:textSize="@dimen/font_size_10sp"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/limit_size_25dp"
+                android:layout_height="@dimen/limit_size_25dp"
+                android:src="@drawable/ic_share_white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/share"
+                android:textSize="@dimen/font_size_10sp"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+
+        </LinearLayout>
+
+
+
+
+
+
+
+    </LinearLayout>
+</layout>

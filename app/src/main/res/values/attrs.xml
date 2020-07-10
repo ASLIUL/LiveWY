@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="LiveTitleBar">
+        <attr name="leftImg" format="reference"/>
+        <attr name="leftBtnText" format="string"/>
+        <attr name="leftType" format="integer"/>
+        <attr name="rightImg" format="reference"/>
+        <attr name="rightBtnText" format="string"/>
+        <attr name="rightType" format="integer"/>
+        <attr name="centreType" format="integer"/>
+        <attr name="centreText" format="string"/>
+        <attr name="centreHintText" format="string"/>
+        <attr name="bgColor" format="color"/>
+    </declare-styleable>
+</resources>

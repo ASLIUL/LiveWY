@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/limit_size_80dp"
+        android:id="@+id/title_layout">
+
+        <ImageView
+            android:id="@+id/close_view"
+            android:layout_width="@dimen/limit_size_15dp"
+            android:layout_height="@dimen/limit_size_15dp"
+            android:src="@drawable/ic_close_not_round_white"
+            android:layout_centerVertical="true" />
+
+        <RelativeLayout
+            android:layout_width="@dimen/limit_size_265dp"
+            android:layout_height="@dimen/limit_size_80dp"
+            android:layout_toRightOf="@id/close_view"
+            android:layout_marginStart="@dimen/limit_size_15dp"
+            app:bl_corners_radius="@dimen/limit_size_5dp"
+            app:bl_solid_color="@color/live_icon_bg">
+
+            <ImageView
+                android:id="@+id/live_cover"
+                android:layout_width="@dimen/limit_size_65dp"
+                android:layout_height="@dimen/limit_size_65dp"
+                app:bl_corners_radius="@dimen/limit_size_5dp"
+                android:layout_margin="@dimen/limit_size_5dp"
+                android:background="@color/live_icon_bg" />
+
+            <TextView
+                android:layout_width="@dimen/limit_size_65dp"
+                android:layout_height="@dimen/limit_size_18dp"
+                android:layout_alignBottom="@id/live_cover"
+                android:text="@string/change_cover"
+                android:gravity="center"
+                android:textSize="@dimen/font_size_10sp"
+                android:layout_alignLeft="@id/live_cover"
+                app:bl_solid_color="@color/live_icon_bg"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/title_connect"
+                android:layout_width="@dimen/limit_size_120dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/room_title_hint"
+                android:textSize="@dimen/font_size_15sp"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:layout_toRightOf="@id/live_cover"
+                android:layout_marginStart="@dimen/limit_size_10dp"
+                android:layout_centerVertical="true" />
+
+            <ImageView
+                android:id="@+id/edit_title"
+                android:layout_width="@dimen/limit_size_15dp"
+                android:layout_height="@dimen/limit_size_15dp"
+                android:src="@drawable/ic_edit_live_title_white"
+                android:layout_toRightOf="@id/title_connect"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/limit_size_10dp" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</layout>

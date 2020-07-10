@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="theme_color_normal">#FBFBFB</color>
+    <color name="theme_color_coolapk">#0CA763</color>
+    <color name="theme_color_aunt">#E04D3F</color>
+    <color name="theme_color_bili">#FC7DA3</color>
+    <color name="theme_color_yedi">#485BBD</color>
+    <color name="theme_color_duck">#00A093</color>
+    <color name="theme_color_zhihu">#24A0F5</color>
+    <color name="theme_color_ito">#FFA200</color>
+    <color name="theme_color_upmarket">#252525</color>
+    <color name="theme_color_amoled">#3A3A3A</color>
+    <color name="theme_color_more">#707070</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="navi_login_bg">#FC7DA3</color>
+    <color name="theme_color_primary_trans">#99f0486c</color>
+    <color name="gray">#C2C2C2</color>
+    <color name="light_grey">#FBFBFB</color>
+    <color name="transparent">#FFFFFFFF</color>
+    <color name="hy_color">#FF0090FF</color>
+    <color name="live_title_bg">#FFAFA18C</color>
+    <color name="login_et_bg">#FFF9F9F9</color>
+    <color name="forgot_password_color">#FF4A9AFD</color>
+    <color name="not_input_color">#FFD8D8DA</color>
+    <color name="live_icon_bg">#66ACACAC</color>
+  </resources>

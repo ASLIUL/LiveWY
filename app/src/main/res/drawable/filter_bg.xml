@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checkable="true">
+        <shape>
+            <corners android:radius="@dimen/limit_size_5dp"/>
+            <solid android:color="@color/theme_color_bili"/>
+        </shape>
+    </item>
+    <item android:state_checkable="false">
+        <shape>
+            <corners android:radius="@dimen/limit_size_5dp"/>
+            <stroke android:color="@color/theme_color_bili" android:width="@dimen/limit_size_1dp"/>
+        </shape>
+    </item>
+
+</selector>

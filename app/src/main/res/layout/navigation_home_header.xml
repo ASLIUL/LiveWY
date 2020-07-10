@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/limit_size_20dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/user_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/navi_header_img"
+            android:layout_width="@dimen/limit_size_50dp"
+            android:layout_height="@dimen/limit_size_50dp"
+            android:layout_marginTop="@dimen/limit_size_30dp"
+            android:src="@drawable/ic_normal_header"
+            />
+
+        <TextView
+            android:id="@+id/navi_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小明"
+            android:layout_below="@id/navi_header_img"
+            android:layout_marginTop="@dimen/limit_size_5dp"
+            />
+        <TextView
+            android:id="@+id/navi_user_ident"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正式会员"
+            android:textSize="@dimen/font_size_10sp"
+            android:layout_below="@id/navi_header_img"
+            android:layout_toEndOf="@id/navi_username"
+            android:layout_marginTop="@dimen/limit_size_8dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/limit_size_5dp"
+            />
+
+        <ImageView
+            android:id="@+id/navi_scan"
+            android:layout_width="@dimen/limit_size_20dp"
+            android:layout_height="@dimen/limit_size_20dp"
+            android:layout_marginTop="@dimen/limit_size_5dp"
+            android:src="@drawable/ic_scan_black"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/limit_size_30dp"
+            />
+
+        <TextView
+            android:id="@+id/navi_user_live_monery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="B币：12"
+            android:textSize="@dimen/font_size_10sp"
+            android:layout_below="@id/navi_username"
+            />
+
+        <TextView
+            android:id="@+id/navi_user_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="硬币: 1000"
+            android:textSize="@dimen/font_size_10sp"
+            android:layout_below="@id/navi_username"
+            android:layout_toEndOf="@id/navi_user_live_monery"
+            android:layout_marginLeft="@dimen/limit_size_5dp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/no_login_rela"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/limit_size_30dp"
+        >
+
+        <TextView
+            android:id="@+id/login_tips_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_tips_1"
+            android:textSize="@dimen/font_size_18sp"
+            android:textColor="@color/theme_color_primary_trans"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/login_tips_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_tips_2"
+            android:layout_below="@id/login_tips_title"
+            android:textSize="@dimen/font_size_12sp"
+            />
+        <Button
+            android:id="@+id/goLogin"
+            android:layout_width="@dimen/limit_size_120dp"
+            android:layout_height="@dimen/limit_size_40dp"
+            android:text="@string/go_login"
+            android:layout_below="@id/login_tips_content"
+            app:bl_corners_radius="@dimen/limit_size_5dp"
+            app:bl_solid_color="@color/navi_login_bg"
+            app:bl_stroke_color="@color/navi_login_bg"
+            app:bl_stroke_width="@dimen/limit_size_1dp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/limit_size_5dp"
+            android:textColor="@color/white"
+            />
+        <Button
+            android:id="@+id/goRegister"
+            android:layout_width="@dimen/limit_size_120dp"
+            android:layout_height="@dimen/limit_size_40dp"
+            android:text="@string/register"
+            android:layout_below="@id/login_tips_content"
+            android:layout_toEndOf="@id/goLogin"
+            android:layout_marginLeft="@dimen/limit_size_10dp"
+            app:bl_corners_radius="@dimen/limit_size_5dp"
+            app:bl_solid_color="@color/white"
+            app:bl_stroke_color="@color/navi_login_bg"
+            app:bl_stroke_width="@dimen/limit_size_1dp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/limit_size_5dp"
+            />
+
+
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/ad_rela"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/limit_size_30dp"
+        android:padding="@dimen/limit_size_10dp"
+        android:background="@color/white"
+        >
+        <TextView
+            android:id="@+id/ad_text_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test1"
+            android:textSize="@dimen/font_size_12sp"
+            />
+
+        <TextView
+            android:id="@+id/ad_text_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test3"
+            android:textSize="@dimen/font_size_10sp"
+            android:layout_below="@id/ad_text_1"
+            />
+
+        <TextView
+            android:id="@+id/ad_text_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test2"
+            android:textSize="@dimen/font_size_10sp"
+            android:layout_toEndOf="@id/ad_text_1"
+            android:layout_marginTop="@dimen/limit_size_2dp"
+            android:layout_marginLeft="@dimen/limit_size_5dp"
+            />
+    </RelativeLayout>
+
+
+
+</LinearLayout>

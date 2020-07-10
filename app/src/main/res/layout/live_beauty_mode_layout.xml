@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/limit_size_20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/limit_size_15dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/beauty"
+                android:textSize="@dimen/font_size_15sp"
+                android:textColor="@color/theme_color_bili"
+                />
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/beauty_seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/limit_size_20dp"
+                android:max="100"
+                android:thumbTint="@color/theme_color_bili"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/limit_size_15dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/filter"
+                android:textSize="@dimen/font_size_15sp"
+                android:textColor="@color/theme_color_bili"
+                />
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/filter_seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/limit_size_20dp"
+                android:max="100"
+                android:thumbTint="@color/theme_color_bili"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/limit_size_15dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/exposure"
+                android:textSize="@dimen/font_size_15sp"
+                android:textColor="@color/theme_color_bili"
+                />
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/exposure_seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/limit_size_20dp"
+                android:max="100"
+                android:thumbTint="@color/theme_color_bili"
+                />
+        </LinearLayout>
+
+
+
+        <Button
+            android:id="@+id/close_view"
+            android:layout_width="@dimen/limit_size_100dp"
+            android:layout_height="@dimen/limit_size_40dp"
+            android:text="@string/sure"
+            app:bl_corners_radius="@dimen/limit_size_20dp"
+            app:bl_solid_color="@color/theme_color_bili"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/limit_size_20dp"
+            android:layout_marginBottom="@dimen/limit_size_20dp"
+            android:layout_gravity="center_horizontal" />
+
+
+    </LinearLayout>
+</layout>
