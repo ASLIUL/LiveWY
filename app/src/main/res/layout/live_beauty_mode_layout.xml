@@ -58,6 +58,7 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="@dimen/limit_size_20dp"
                 android:max="100"
+                android:progress="30"
                 android:thumbTint="@color/theme_color_bili"
                 />
         </LinearLayout>

@@ -2,6 +2,7 @@ package com.yb.livewy.vm;
 
 import android.app.Application;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -31,9 +32,20 @@ public class LiveStreamViewModel extends AndroidViewModel {
 
     private MutableLiveData<LiveRtmpUrl> liveRtmpUrlLiveData = new MutableLiveData<>();
 
+    private MutableLiveData<Boolean> isLiveing = new MutableLiveData<>();
+
     public LiveStreamViewModel(@NonNull Application application) {
         super(application);
         userApi = new RetrofitClient(getApplication()).createService(UserApi.class);
+        isLiveing.setValue(false);
+    }
+
+    public void setIsLiveing(boolean isLive) {
+        this.isLiveing.setValue(isLive);
+    }
+
+    public MutableLiveData<Boolean> getIsLiveing() {
+        return isLiveing;
     }
 
     public MutableLiveData<LiveRtmpUrl> getLiveRtmpUrlLiveData() {
@@ -115,6 +127,9 @@ public class LiveStreamViewModel extends AndroidViewModel {
     }
     //下播
     public void closeLive(){
+        if (TextUtils.isEmpty(liveRtmpUrlLiveData.getValue().getId()+"")){
+            return;
+        }
             userApi.closeLive(liveRtmpUrlLiveData.getValue().getId()).enqueue(new Callback<Result>() {
                 @Override
                 public void onResponse(Call<Result> call, Response<Result> response) {

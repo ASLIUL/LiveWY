@@ -23,7 +23,6 @@ import com.yb.livewy.net.RetrofitClient;
 import com.yb.livewy.net.RetrofitUtil;
 import com.yb.livewy.net.UserApi;
 import com.yb.livewy.ui.activity.ForgotPasswordActivity;
-import com.yb.livewy.ui.activity.LiveReadyActivity;
 import com.yb.livewy.ui.activity.LiveStreamActivity;
 import com.yb.livewy.ui.activity.RegisterActivity;
 import com.yb.livewy.util.NetConstant;

@@ -2,41 +2,44 @@ package com.yb.livewy.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
-import com.hjq.permissions.Permission;
-import com.hjq.permissions.XXPermissions;
-import com.netease.LSMediaCapture.lsMediaCapture;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.netease.vcloud.video.effect.VideoEffect;
 import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.RequestCallback;
 import com.wildma.pictureselector.PictureSelectUtils;
 import com.yb.livewy.R;
+import com.yb.livewy.bean.Filter;
+import com.yb.livewy.bean.MessageEvent;
 import com.yb.livewy.bean.PublishParam;
+import com.yb.livewy.bean.YBZBIMEnum;
 import com.yb.livewy.databinding.ActivityLiveStreamUiBinding;
 import com.yb.livewy.ui.inter.LiveSteramInterface;
+import com.yb.livewy.ui.inter.OnFUControlListener;
+import com.yb.livewy.ui.model.FURenderer;
 import com.yb.livewy.ui.model.LiveSteamUITitleAction;
 import com.yb.livewy.ui.model.LiveStreamLeftPanel;
 import com.yb.livewy.ui.model.LiveStreamPanel;
+import com.yb.livewy.util.CameraUtils;
 import com.yb.livewy.util.NetConstant;
 import com.yb.livewy.util.ToastUtil;
 import com.yb.livewy.vm.LiveStreamViewModel;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
-import static com.netease.LSMediaCapture.lsMediaCapture.FormatType.RTMP;
-import static com.netease.LSMediaCapture.lsMediaCapture.StreamType.AV;
 import static com.wildma.pictureselector.PictureSelectUtils.GET_BY_ALBUM;
+import static com.yb.livewy.ui.model.FURenderer.EXTERNAL_INPUT_TYPE_VIDEO;
 
-public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBinding, LiveStreamViewModel> implements LiveSteramInterface {
+public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBinding, LiveStreamViewModel> implements LiveSteramInterface,FURenderer.OnFUDebugListener,FURenderer.OnTrackingStatusChangedListener {
 
 
     //直播工具类
@@ -55,12 +58,21 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
     //封面地址
     private String filePath;
 
+    private static final String TAG = "LiveStreamActivity";
+
+    private OnFUControlListener fuControlListener;
+
+    private FURenderer fuRenderer;
+
 
     @Override
     protected void initData() {
         binding.setData(viewModel);
         binding.setLifecycleOwner(this);
         binding.title.setLifecycleOwner(this);
+//        FuVideoEffect fuVideoEffect = new FuVideoEffect();
+//        boolean isInit = fuVideoEffect.filterInit(getApplicationContext());
+//        Log.d(TAG, "initData: "+isInit);
         PermissionX.init(this)
                 .permissions(
                         Manifest.permission.CAMERA,
@@ -76,16 +88,21 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                 }
             }
         });
+        fuRenderer = initFURenderer();
+        this.fuControlListener = fuRenderer;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.screenBrightness = 0.7f;
         getWindow().setAttributes(params);
         liveStreamPanel = new LiveStreamPanel(LiveStreamActivity.this,binding.neteaseView);
+        liveStreamPanel.setFuRenderer(fuRenderer);
         liveStreamPanel.startPreview();
         leftPanel = new LiveStreamLeftPanel(binding.getRoot().getRootView(),liveStreamPanel.getCapture(),LiveStreamActivity.this);
-        initPublishParam();
+        leftPanel.setFuControlListener(fuRenderer);
         titleAction = new LiveSteamUITitleAction(LiveStreamActivity.this,binding.getRoot().getRootView(),this);
         viewModel.getHistoryData();
+        titleAction.setIsLiveStreaming(isStartLive);
+        viewModel.setIsLiveing(isStartLive);
     }
 
     @Override
@@ -99,8 +116,7 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                     isUploadCover = false;
                 }
                 if (isStartLive){
-                    publishParam.setPushUrl(liveRtmpUrl.getPushUrl());
-                    liveStreamPanel.init(publishParam);
+                    liveStreamPanel.init(liveRtmpUrl.getPushUrl());
                     liveStreamPanel.initLive();
                 }
             }
@@ -115,13 +131,12 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.start_live){
-
             if (isStartLive){
                 //说明已经开始直播了
-
                 titleAction.setIsLiveStreaming(true);
                 liveStreamPanel.stopLive();
                 isStartLive = false;
+                viewModel.setIsLiveing(isStartLive);
                 viewModel.closeLive();
                 return;
             }else {
@@ -138,9 +153,11 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                 }
                 viewModel.startLive(true,filePath,titleAction.getLiveTitle());
                 isStartLive = true;
+                viewModel.setIsLiveing(isStartLive);
             }else {
                 viewModel.startLive(false,"",titleAction.getLiveTitle());
                 isStartLive = true;
+                viewModel.setIsLiveing(isStartLive);
             }
 
         }else if (v.getId() == R.id.live_cover){
@@ -161,30 +178,60 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
     protected void onDestroy() {
         super.onDestroy();
         if (liveStreamPanel!=null){
-            liveStreamPanel.onDestory();
+            liveStreamPanel.onDestroy();
         }
-    }
-
-    private void initPublishParam(){
-        publishParam = new PublishParam();
-        publishParam.setPushUrl("");
-        publishParam.setStreamType(AV);
-        publishParam.setFormatType(RTMP);
-        publishParam.setRecordPath(Environment.getDataDirectory().getPath());
-        publishParam.setVideoQuality(lsMediaCapture.VideoQuality.HD1080P);
-        publishParam.setScale_16x9(false);
-        publishParam.setUseFilter(true);
-        publishParam.setFilterType(VideoEffect.FilterType.whiten);
-        publishParam.setFrontCamera(true);
-        publishParam.setWatermark(false);
-        publishParam.setQosEnable(true);
-        publishParam.setQosEncodeMode(2);
-        publishParam.setGraffitiOn(false);
-        publishParam.setUploadLog(true);
     }
 
     @Override
     public void addMessage(IMMessage message) {
+
+    }
+
+    protected FURenderer initFURenderer() {
+        return new FURenderer
+                .Builder(this)
+                .maxFaces(2)
+                .setNeedFaceBeauty(true)
+                .setExternalInputType(EXTERNAL_INPUT_TYPE_VIDEO)
+                .inputImageOrientation(CameraUtils.getFrontCameraOrientation())
+                .inputTextureType(FURenderer.FU_ADM_FLAG_EXTERNAL_OES_TEXTURE)
+                .setOnFUDebugListener(this)
+                .setOnTrackingStatusChangedListener(this)
+                .setOnSystemErrorListener(error -> {
+                    Log.d(TAG, "initFURenderer:SDK遇到错误\t"+error);
+                })
+                .build();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getMessageEvent(MessageEvent messageEvent){
+        if (messageEvent==null){
+            return;
+        }
+        if (messageEvent.getMessageType() == YBZBIMEnum.MessageType.CHOOSEFILTER){
+            Filter filter = (Filter) messageEvent.getObject();
+            binding.chooseFilter.setText("滤镜 | "+context.getResources().getString(filter.getNameId()));
+            fuControlListener.onFilterNameSelected(filter.getName());
+        }
+        if (messageEvent.getMessageType() == YBZBIMEnum.MessageType.FILTERSTRENGTH){
+            int progress = (int) messageEvent.getObject();
+            if (progress<0){
+                return;
+            }
+            fuControlListener.onFilterLevelSelected((float) (progress)/100);
+        }
+        if (messageEvent.getMessageType() == YBZBIMEnum.MessageType.BEAUTYSTRENGTH){
+
+        }
+    }
+
+    @Override
+    public void onTrackStatusChanged(int type, int status) {
+        Log.d(TAG, "onTrackStatusChanged: type=\t"+type+"\tstatus=\t"+status);
+    }
+
+    @Override
+    public void onFpsChange(double fps, double renderTime) {
 
     }
 }

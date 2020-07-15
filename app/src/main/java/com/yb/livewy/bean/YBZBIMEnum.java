@@ -53,7 +53,10 @@ public class YBZBIMEnum {
         CALLCLOSEDMESSAGE("会话关闭",15),
         CALLDATAMESSAGE("会话数据",16),
         BEAUTYMODECHANGE("修改美颜强度",17),
-        UPDATEFILTERTYPE("更改滤镜",18);
+        UPDATEFILTERTYPE("更改滤镜",18),
+        CHOOSEFILTER("选择的滤镜",19),
+        FILTERSTRENGTH("滤镜强度",20),
+        BEAUTYSTRENGTH("美颜强度",21);
 
 
         private String typeName;
@@ -150,4 +153,10 @@ public class YBZBIMEnum {
         ERROR,
         LOADING
     }
+
+
+
+
+
+
 }

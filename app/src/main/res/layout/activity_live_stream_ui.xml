@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="data"
             type="com.yb.livewy.vm.LiveStreamViewModel" />
@@ -13,18 +14,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <com.netease.vcloud.video.render.NeteaseView
-            android:id="@+id/netease_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
+        <RelativeLayout
+            android:id="@+id/netease_layout"
+            android:layout_width="@dimen/limit_size_400dp"
+            android:layout_height="712dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.5"
+            >
+            <com.netease.vcloud.video.render.NeteaseView
+                android:id="@+id/netease_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="1"
+            tools:ignore="MissingConstraints">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current_status"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/liveing_on"
+                android:textColor="@color/white"
+                android:visibility="@{data.isLiveing ? View.VISIBLE : View.GONE}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_live"
+                android:textColor="@color/white"
+                android:visibility="@{!data.isLiveing ? View.VISIBLE : View.GONE}" />
+        </LinearLayout>
+
+
 
         <include
             android:id="@+id/title"
@@ -34,7 +74,7 @@
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/netease_view"
+            app:layout_constraintTop_toTopOf="@+id/netease_layout"
             app:layout_constraintVertical_bias="0.095" />
 
         <include
@@ -47,6 +87,22 @@
             app:layout_constraintHorizontal_bias="0.95"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/choose_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_size_22sp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintVertical_bias="0.1"
+            tools:ignore="MissingConstraints" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"
@@ -64,7 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/netease_view"
+            app:layout_constraintBottom_toBottomOf="@+id/netease_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline4"
             app:layout_constraintVertical_bias="1.0"

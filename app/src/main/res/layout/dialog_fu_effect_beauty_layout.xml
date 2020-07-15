@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/limit_size_180dp"
+    app:bl_solid_color="@color/filter_dialog_bg_color">
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/beauty_strength"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:thumb="@drawable/ic_round_seek_bar_thumb_blue"
+        android:layout_marginStart="@dimen/limit_size_50dp"
+        android:layout_marginEnd="@dimen/limit_size_50dp"
+        android:progressBackgroundTint="@color/white"
+        android:layout_marginTop="@dimen/limit_size_30dp"
+        android:layout_marginBottom="@dimen/limit_size_20dp"
+        android:progressTint="@color/hy_color"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/beauty_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/limit_size_20dp"
+        android:orientation="horizontal"
+        tools:listitem="@layout/adapter_fu_filter_recycler_layout"
+        tools:itemCount="10"
+        />
+
+<!--    <HorizontalScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="@dimen/limit_size_30dp"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <com.yb.livewy.view.ImageViewCheckable-->
+<!--                android:id="@+id/reset"-->
+<!--                android:layout_width="@dimen/limit_size_50dp"-->
+<!--                android:layout_height="@dimen/limit_size_75dp"-->
+<!--                android:layout_marginStart="@dimen/limit_size_20dp"-->
+<!--                android:layout_marginEnd="@dimen/limit_size_10dp"-->
+<!--                app:checkable="false"-->
+<!--                app:icon="@drawable/ic_reset_white"-->
+<!--                app:name="@string/origin" />-->
+
+<!--            <com.yb.livewy.view.ImageViewCheckable-->
+<!--                android:id="@+id/blur_white"-->
+<!--                android:layout_width="@dimen/limit_size_50dp"-->
+<!--                android:layout_height="@dimen/limit_size_75dp"-->
+<!--                android:layout_marginStart="@dimen/limit_size_10dp"-->
+<!--                android:layout_marginEnd="@dimen/limit_size_10dp"-->
+<!--                app:checkable="false"-->
+<!--                app:icon="@drawable/ic_blur_white"-->
+<!--                app:name="@string/blur_white" />-->
+
+<!--            <com.yb.livewy.view.ImageViewCheckable-->
+<!--                android:id="@+id/mei_bai"-->
+<!--                android:layout_width="@dimen/limit_size_50dp"-->
+<!--                android:layout_height="@dimen/limit_size_75dp"-->
+<!--                android:layout_marginStart="@dimen/limit_size_10dp"-->
+<!--                android:layout_marginEnd="@dimen/limit_size_10dp"-->
+<!--                app:checkable="false"-->
+<!--                app:icon="@drawable/ic_reset_white"-->
+<!--                app:name="@string/mei_bai" />-->
+
+<!--            <com.yb.livewy.view.ImageViewCheckable-->
+<!--                android:id="@+id/thine_face"-->
+<!--                android:layout_width="@dimen/limit_size_50dp"-->
+<!--                android:layout_height="@dimen/limit_size_75dp"-->
+<!--                android:layout_marginStart="@dimen/limit_size_10dp"-->
+<!--                android:layout_marginEnd="@dimen/limit_size_10dp"-->
+<!--                app:checkable="false"-->
+<!--                app:icon="@drawable/ic_thin_face_white"-->
+<!--                app:name="@string/thin_face" />-->
+
+<!--            <com.yb.livewy.view.ImageViewCheckable-->
+<!--                android:id="@+id/thine_nose"-->
+<!--                android:layout_width="@dimen/limit_size_50dp"-->
+<!--                android:layout_height="@dimen/limit_size_75dp"-->
+<!--                android:layout_marginStart="@dimen/limit_size_10dp"-->
+<!--                android:layout_marginEnd="@dimen/limit_size_10dp"-->
+<!--                app:checkable="false"-->
+<!--                app:icon="@drawable/ic_thin_nose_white"-->
+<!--                app:name="@string/thin_nose" />-->
+
+<!--            <com.yb.livewy.view.ImageViewCheckable-->
+<!--                android:id="@+id/big_eyes"-->
+<!--                android:layout_width="@dimen/limit_size_50dp"-->
+<!--                android:layout_height="@dimen/limit_size_75dp"-->
+<!--                android:layout_marginStart="@dimen/limit_size_10dp"-->
+<!--                android:layout_marginEnd="@dimen/limit_size_10dp"-->
+<!--                app:checkable="false"-->
+<!--                app:icon="@drawable/ic_big_eyes_white"-->
+<!--                app:name="@string/big_eyes" />-->
+
+<!--            <com.yb.livewy.view.ImageViewCheckable-->
+<!--                android:id="@+id/qu_dou"-->
+<!--                android:layout_width="@dimen/limit_size_50dp"-->
+<!--                android:layout_height="@dimen/limit_size_75dp"-->
+<!--                android:layout_marginStart="@dimen/limit_size_10dp"-->
+<!--                android:layout_marginEnd="@dimen/limit_size_10dp"-->
+<!--                android:visibility="gone"-->
+<!--                app:checkable="false"-->
+<!--                app:icon="@drawable/ic_mf_white"-->
+<!--                app:name="@string/qu_dou" />-->
+<!--        </LinearLayout>-->
+
+<!--    </HorizontalScrollView>-->
+
+</LinearLayout>

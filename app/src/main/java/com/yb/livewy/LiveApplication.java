@@ -17,8 +17,11 @@ import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 import com.vanniktech.emoji.EmojiManager;
 import com.vanniktech.emoji.google.GoogleEmojiProvider;
 import com.yb.livewy.ui.activity.LoginActivity;
+import com.yb.livewy.ui.model.FURenderer;
+import com.yb.livewy.util.FileUtils;
 import com.yb.livewy.util.SaveUserData;
 import com.yb.livewy.util.SystemUtil;
+import com.yb.livewy.util.ThreadHelper;
 
 import java.io.IOException;
 
@@ -37,6 +40,14 @@ public class LiveApplication extends Application {
         context = getApplicationContext();
         EmojiManager.install(new GoogleEmojiProvider());
         NIMClient.init(this,loginInfo(),options());
+        FURenderer.initFURenderer(LiveApplication.this);
+        ThreadHelper.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                // 异步拷贝 assets 资源
+                FileUtils.copyAssetsChangeFaceTemplate(getApplicationContext());
+            }
+        });
     }
 
     public static LiveApplication getInstance() {

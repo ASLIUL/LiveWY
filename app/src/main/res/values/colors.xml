@@ -27,4 +27,12 @@
     <color name="forgot_password_color">#FF4A9AFD</color>
     <color name="not_input_color">#FFD8D8DA</color>
     <color name="live_icon_bg">#66ACACAC</color>
+    <color name="colorTranslucent">#00000000</color>
+    <color name="colorWhite">#ffffffff</color>
+    <color name="faceunityYellow">#ffcb15</color>
+    <color name="c80000000">#80000000</color> <!--50%-->
+    <color name="cb2000000">#b2000000</color>
+    <color name="c66000000">#66000000</color><!--40%-->
+    <color name="not_user_bg_color">#393A45</color>
+  <color name="filter_dialog_bg_color">#FF161824</color>
   </resources>

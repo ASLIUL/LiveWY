@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
@@ -13,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.netease.LSMediaCapture.lsLogUtil;
 import com.netease.LSMediaCapture.lsMediaCapture;
 import com.netease.LSMediaCapture.lsMessageHandler;
+import com.netease.LSMediaCapture.video.VideoCallback;
+import com.netease.vcloud.video.effect.VideoEffect;
 import com.netease.vcloud.video.render.NeteaseView;
 import com.yb.livewy.bean.Beauty;
 import com.yb.livewy.bean.PublishParam;
@@ -20,6 +23,9 @@ import com.yb.livewy.util.NetConstant;
 import com.yb.livewy.util.SaveUserData;
 import com.yb.livewy.util.SystemUtil;
 import com.yb.livewy.util.ToastUtil;
+
+import static com.netease.LSMediaCapture.lsMediaCapture.FormatType.RTMP;
+import static com.netease.LSMediaCapture.lsMediaCapture.StreamType.AV;
 
 public class LiveStreamPanel implements lsMessageHandler {
 
@@ -30,7 +36,7 @@ public class LiveStreamPanel implements lsMessageHandler {
 
     // SDK 相关参数
     //滤镜
-    private boolean userFilter;
+    private boolean userFilter = false;
     //水印
     private boolean needWater = false;
     //涂鸦
@@ -77,17 +83,20 @@ public class LiveStreamPanel implements lsMessageHandler {
 
     private Handler handler = new Handler();
 
+    //第三方滤镜
+    private FuVideoEffect fuVideoEffect;
+
+    private FURenderer fuRenderer;
+
     public LiveStreamPanel(AppCompatActivity appCompatActivity,NeteaseView neteaseView){
         this.appCompatActivity = appCompatActivity;
         this.neteaseView = neteaseView;
+        initPublishParam();
     }
 
 
-    public void init(PublishParam publishParam){
-        this.publishParam = publishParam;
-        userFilter = publishParam.isUseFilter();
-        needGraffiti = publishParam.isGraffitiOn();
-        needWater = publishParam.isWatermark();
+    public void init(String pushUrl){
+        publishParam.setPushUrl(pushUrl);
         liveStreamingPara = new lsMediaCapture.LiveStreamingPara();
         liveStreamingPara.setStreamType(publishParam.getStreamType());
         liveStreamingPara.setFormatType(publishParam.getFormatType());
@@ -95,9 +104,9 @@ public class LiveStreamPanel implements lsMessageHandler {
         liveStreamingPara.setQosOn(publishParam.isQosEnable());
 
         //是否是前置摄像头
-        boolean frontCamera = publishParam.isFrontCamera();
+//        boolean frontCamera = publishParam.isFrontCamera();
         //是否强制16x9
-        boolean scale_16x9 = publishParam.isScale_16x9();
+//        boolean scale_16x9 = publishParam.isScale_16x9();
 
 //        if (publishParam.getStreamType() != lsMediaCapture.StreamType.AUDIO){
 //            lsMediaCapture.VideoQuality v = publishParam.getVideoQuality();
@@ -120,15 +129,19 @@ public class LiveStreamPanel implements lsMessageHandler {
     }
 
     public void startPreview(){
+        initFuVideoEffect();
+        userFilter = publishParam.isUseFilter();
+        needGraffiti = publishParam.isGraffitiOn();
+        needWater = publishParam.isWatermark();
         try {
-        //创建直播实例
+            //创建直播实例
             lsMediaCapture.LsMediaCapturePara para = new lsMediaCapture.LsMediaCapturePara();
             para.setContext(appCompatActivity.getApplicationContext());
             para.setMessageHandler(this);
             para.setLogLevel(lsLogUtil.LogLevel.INFO);
             para.setUploadLog(true);
             capture = new lsMediaCapture(para);
-            capture.startVideoPreview(neteaseView,true,userFilter,lsMediaCapture.VideoQuality.HD1080P,true);
+            capture.startVideoPreview(neteaseView,true,userFilter,lsMediaCapture.VideoQuality.HD1080P,publishParam.isScale_16x9());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -139,8 +152,30 @@ public class LiveStreamPanel implements lsMessageHandler {
             capture.setFilterType(publishParam.getFilterType());
         }
         if (videoCallback){
+            Log.d(TAG, "startPreview: 滤镜");
             //在这里可以自定义滤镜
+            capture.setCaptureRawDataCB(new VideoCallback() {
+                @Override
+                public int onVideoCapture(byte[] data, int textureId, int width, int height, int orientation) {
+                    if (fuRenderer!=null){
+                        return fuRenderer.onDrawFrame(data,textureId,width, height);
+                    }else {
+                        return 0;
+                    }
+                }
+            });
         }
+
+        capture.setCaptureRawDataCB(new VideoCallback() {
+            @Override
+            public int onVideoCapture(byte[] data, int textureId, int width, int height, int orientation) {
+                if (fuRenderer!=null){
+                    return fuRenderer.onDrawFrame(data,textureId,width, height);
+                }else {
+                    return 0;
+                }
+            }
+        });
 
         if (audioCallback){
             //音频采集原始数据回调，在这里可以进行降噪，消除回音等
@@ -151,7 +186,18 @@ public class LiveStreamPanel implements lsMessageHandler {
 
     }
 
+    private void initFuVideoEffect(){
+        if (fuVideoEffect == null){
+            fuVideoEffect = new FuVideoEffect();
+            fuVideoEffect.filterInit(appCompatActivity);
+        }
+    }
 
+    public void setFuRenderer(FURenderer fuRenderer) {
+        this.fuRenderer = fuRenderer;
+        fuRenderer.onSurfaceCreated();
+        fuRenderer.cameraChanged();
+    }
 
     private boolean startLive(){
         //初始化直播
@@ -171,7 +217,6 @@ public class LiveStreamPanel implements lsMessageHandler {
         SaveUserData.getInstance(appCompatActivity).saveLiveStatus(1);
         ToastUtil.showToast(NetConstant.STOP_LIVE);
         try {
-
             if (capture!=null){
                 capture.stopLiveStreaming();
                 ToastUtil.showToast(NetConstant.STOP_LIVE_FINISH);
@@ -291,21 +336,20 @@ public class LiveStreamPanel implements lsMessageHandler {
         }
     }
 
-    public void onDestory(){
+    public void onDestroy(){
         appCompatActivity.unregisterReceiver(messageReceiver);
         appCompatActivity.unregisterReceiver(audioMixVolumeMessageReceiver);
-
+        if (fuRenderer!=null){
+            fuRenderer.onSurfaceDestroyed();
+        }
         if (capture!=null && liveStreamingOn){
             stopLive();
             if (startVideoCamera){
                 //关闭相机预览
                 capture.stopVideoPreview();
-
                 //滤镜等记得在这里释放资源
-
                 capture.destroyVideoPreview();
             }
-
             //反初始化推流实例，当他与stopLiveStreaming连续调用时，参数为false
             capture.uninitLsMediaCapture(false);
             capture = null;
@@ -330,8 +374,6 @@ public class LiveStreamPanel implements lsMessageHandler {
         if (liveStreamingOn){
             liveStreamingOn = false;
         }
-
-
     }
 
     public class AudioMixVolumeMessageReceiver extends BroadcastReceiver {
@@ -345,9 +387,27 @@ public class LiveStreamPanel implements lsMessageHandler {
         lsMediaCapture.VideoPara videoPara = new lsMediaCapture.VideoPara();
         videoPara.setHeight(SystemUtil.getScreenHeight(appCompatActivity));
         videoPara.setWidth(SystemUtil.getScreenWidth(appCompatActivity));
-        videoPara.setFps(60);
-        videoPara.setBitrate(1920*1080);
+        videoPara.setFps(30);
+        videoPara.setBitrate(1280*720);
         return videoPara;
+    }
+
+    private void initPublishParam(){
+        publishParam = new PublishParam();
+        publishParam.setPushUrl("");
+        publishParam.setStreamType(AV);
+        publishParam.setFormatType(RTMP);
+        publishParam.setRecordPath(Environment.getDataDirectory().getPath());
+        publishParam.setVideoQuality(lsMediaCapture.VideoQuality.HD1080P);
+        publishParam.setScale_16x9(true);
+        publishParam.setUseFilter(false);
+        publishParam.setFilterType(VideoEffect.FilterType.none);
+        publishParam.setFrontCamera(true);
+        publishParam.setWatermark(false);
+        publishParam.setQosEnable(true);
+        publishParam.setQosEncodeMode(2);
+        publishParam.setGraffitiOn(false);
+        publishParam.setUploadLog(true);
     }
 
 

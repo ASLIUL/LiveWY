@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/limit_size_150dp"
+    app:bl_corners_topLeftRadius="@dimen/limit_size_5dp"
+    app:bl_corners_topRightRadius="@dimen/limit_size_5dp"
+    app:bl_solid_color="@color/filter_dialog_bg_color"
+    >
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/filter_strength"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:thumb="@drawable/ic_round_seek_bar_thumb_blue"
+        android:progress="50"
+        android:layout_marginStart="@dimen/limit_size_50dp"
+        android:layout_marginEnd="@dimen/limit_size_50dp"
+        android:progressBackgroundTint="@color/white"
+        android:layout_marginTop="@dimen/limit_size_30dp"
+        android:layout_marginBottom="@dimen/limit_size_20dp"
+        android:progressTint="@color/hy_color"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/filter_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/limit_size_20dp"
+        />
+
+</LinearLayout>

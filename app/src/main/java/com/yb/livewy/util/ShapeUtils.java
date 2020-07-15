@@ -3,6 +3,8 @@ package com.yb.livewy.util;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 
+import androidx.annotation.IdRes;
+
 /**
  * create by liu
  * on 2020/5/14 5:25 PM
@@ -48,6 +50,13 @@ public class ShapeUtils {
         drawable.setStroke(3, Color.GRAY);
         //设置shape背景色
         drawable.setColor(Color.parseColor("#FFFFFF"));
+        return drawable;
+    }
+
+    public static GradientDrawable setStrokeShapeByRoundImg(String strokeColor){
+        GradientDrawable drawable = new GradientDrawable();
+        //设置边缘线的宽以及颜色
+        drawable.setStroke(6, Color.parseColor(strokeColor));
         return drawable;
     }
 }

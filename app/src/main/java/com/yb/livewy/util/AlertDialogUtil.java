@@ -5,19 +5,28 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatSeekBar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.netease.vcloud.video.effect.VideoEffect;
 import com.yb.livewy.R;
 import com.yb.livewy.bean.Beauty;
+import com.yb.livewy.bean.FilterEnum;
 import com.yb.livewy.bean.MessageEvent;
 import com.yb.livewy.bean.YBZBIMEnum;
+import com.yb.livewy.ui.adapter.FuVideoFilterRecyclerAdapter;
+import com.yb.livewy.ui.model.FuEffectNormalParam;
 
 import org.greenrobot.eventbus.EventBus;
+
+import a.b.a.L;
 
 /**
  * create by liu
@@ -107,4 +116,64 @@ public class AlertDialogUtil {
         }));
         return alertDialog;
     }
+
+    //fuVideoEffect 滤镜dialog
+    public static AlertDialog showFuVideoEffectFilterDialog(Context context){
+        builder = new AlertDialog.Builder(context,R.style.dialogAnim);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_fu_video_effect_filter_layout,null,false);
+        RecyclerView recyclerView = view.findViewById(R.id.filter_recycler);
+        AppCompatSeekBar seekBar = view.findViewById(R.id.filter_strength);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                EventBus.getDefault().post(new MessageEvent(YBZBIMEnum.MessageType.FILTERSTRENGTH,i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        builder.setView(view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(new FuVideoFilterRecyclerAdapter(context, FilterEnum.getFiltersByFilterType()));
+        AlertDialog alertDialog = builder.create();
+        return alertDialog;
+    }
+
+    //美颜alertDialog
+    public static AlertDialog showFuEffectBeautyDialog(Context context){
+        builder = new AlertDialog.Builder(context,R.style.dialogAnim);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_fu_effect_beauty_layout,null,false);
+        AppCompatSeekBar seekBar = view.findViewById(R.id.beauty_strength);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                EventBus.getDefault().post(new MessageEvent(YBZBIMEnum.MessageType.BEAUTYSTRENGTH,i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        builder.setView(view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        AlertDialog alertDialog = builder.create();
+        return alertDialog;
+    }
+
+
 }
