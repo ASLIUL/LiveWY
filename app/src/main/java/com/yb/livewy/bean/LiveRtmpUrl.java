@@ -13,6 +13,7 @@ public class LiveRtmpUrl {
      * rtmpPullUrl : rtmp://v591d6e0f.live.126.net/live/ee7720efb272484bb65a35d240a865b7
      * type : null
      * cover_img : null
+     * room_id:2
      */
 
     private int id;
@@ -24,6 +25,7 @@ public class LiveRtmpUrl {
     private String rtmpPullUrl;
     private int type;
     private String cover_img;
+    private int room_id;
 
     public int getId() {
         return id;
@@ -97,9 +99,17 @@ public class LiveRtmpUrl {
         this.cover_img = cover_img;
     }
 
+    public int getRoom_id() {
+        return room_id;
+    }
+
+    public void setRoom_id(int room_id) {
+        this.room_id = room_id;
+    }
+
     @Override
     public String toString() {
-        return "LiveRtmpUrl{" +
+        return "{" +
                 "id=" + id +
                 ", cid='" + cid + '\'' +
                 ", name='" + name + '\'' +
@@ -109,6 +119,7 @@ public class LiveRtmpUrl {
                 ", rtmpPullUrl='" + rtmpPullUrl + '\'' +
                 ", type=" + type +
                 ", cover_img='" + cover_img + '\'' +
+                ", room_id=" + room_id +
                 '}';
     }
 }

@@ -9,17 +9,21 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.permissionx.guolindev.PermissionX;
 import com.permissionx.guolindev.callback.RequestCallback;
 import com.wildma.pictureselector.PictureSelectUtils;
 import com.yb.livewy.R;
+import com.yb.livewy.bean.ChatRoomMsg;
 import com.yb.livewy.bean.Filter;
 import com.yb.livewy.bean.MessageEvent;
 import com.yb.livewy.bean.PublishParam;
 import com.yb.livewy.bean.YBZBIMEnum;
 import com.yb.livewy.databinding.ActivityLiveStreamUiBinding;
+import com.yb.livewy.ui.adapter.LivePlayerRecyclerAdapter;
 import com.yb.livewy.ui.inter.LiveSteramInterface;
 import com.yb.livewy.ui.inter.OnFUControlListener;
 import com.yb.livewy.ui.model.FURenderer;
@@ -34,6 +38,7 @@ import com.yb.livewy.vm.LiveStreamViewModel;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.wildma.pictureselector.PictureSelectUtils.GET_BY_ALBUM;
@@ -44,9 +49,6 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
 
     //直播工具类
     private LiveStreamPanel liveStreamPanel;
-    //直播sdk参数
-    private PublishParam publishParam;
-
     //是否开始直播
     private boolean isStartLive = false;
     //title操作
@@ -63,6 +65,9 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
     private OnFUControlListener fuControlListener;
 
     private FURenderer fuRenderer;
+
+    private ArrayList<ChatRoomMsg> chatMessageBeans = new ArrayList<>();
+    private LivePlayerRecyclerAdapter livePlayerRecyclerAdapter;
 
 
     @Override
@@ -103,6 +108,12 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
         viewModel.getHistoryData();
         titleAction.setIsLiveStreaming(isStartLive);
         viewModel.setIsLiveing(isStartLive);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        linearLayoutManager.setStackFromEnd(true);
+        binding.chatRecycler.setLayoutManager(linearLayoutManager);
+        livePlayerRecyclerAdapter = new LivePlayerRecyclerAdapter(context,chatMessageBeans);
+
     }
 
     @Override
@@ -118,9 +129,27 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                 if (isStartLive){
                     liveStreamPanel.init(liveRtmpUrl.getPushUrl());
                     liveStreamPanel.initLive();
+                    viewModel.loginChatRoom();
+                    binding.startLive.setFocusable(true);
+                    binding.startLive.setEnabled(true);
                 }
             }
         });
+
+        viewModel.getChatMessageLiveData().observe(this,chatRoomMsgs -> {
+            if (chatRoomMsgs!=null){
+                this.chatMessageBeans.addAll(chatRoomMsgs);
+                livePlayerRecyclerAdapter.notifyDataSetChanged();
+                binding.chatRecycler.smoothScrollToPosition(this.chatMessageBeans.size()-1);
+            }
+        });
+        viewModel.getExitLiveLiveData().observe(this,code ->{
+            if (code == NetConstant.EXIT_LIVE){
+                //提示下播了
+                ToastUtil.showToast("下播了");
+            }
+        });
+        viewModel.observerChatRoomMessage();
     }
 
     @Override
@@ -137,6 +166,8 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                 liveStreamPanel.stopLive();
                 isStartLive = false;
                 viewModel.setIsLiveing(isStartLive);
+                viewModel.exitLive();
+                viewModel.exitChatRoom();
                 viewModel.closeLive();
                 return;
             }else {
@@ -154,6 +185,8 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                 viewModel.startLive(true,filePath,titleAction.getLiveTitle());
                 isStartLive = true;
                 viewModel.setIsLiveing(isStartLive);
+                binding.startLive.setFocusable(false);
+                binding.startLive.setEnabled(false);
             }else {
                 viewModel.startLive(false,"",titleAction.getLiveTitle());
                 isStartLive = true;

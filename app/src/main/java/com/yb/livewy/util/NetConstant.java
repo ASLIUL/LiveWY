@@ -32,6 +32,8 @@ public class NetConstant {
     public static final String video = "VIDEO";
     public static volatile int answer = NetConstant.STATE_TIMEOUT;
 
+    public final static int EXIT_LIVE = 100;
+
     public static final String IM_LOGIN_FAILED = "聊天登陆失败";
     public static final String IM_LOGIN_SUCCESS = "聊天登陆成功";
     public static final String IM_APP_KEY = "5c35b9162148f25b125e4af2d052134d";
@@ -126,6 +128,8 @@ public class NetConstant {
     public static final String COVER_FAILED = "封面加载错误，请重新选择";
 
     public static final String NOT_INPUT_LIVE_TITLE = "请输入直播间标题";
+
+    public static final String EXIT_LIVE_MESSAGE = "下播";
 
 
 

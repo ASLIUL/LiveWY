@@ -51,5 +51,6 @@
     <dimen name="limit_size_265dp">265dp</dimen>
     <dimen name="limit_size_300dp">300dp</dimen>
     <dimen name="limit_size_400dp">400dp</dimen>
+    <dimen name="limit_size_420dp">420dp</dimen>
 
 </resources>

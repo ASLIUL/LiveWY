@@ -3,11 +3,25 @@ package com.yb.livewy.vm;
 import android.app.Application;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder;
+import com.netease.nimlib.sdk.chatroom.ChatRoomService;
+import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver;
+import com.netease.nimlib.sdk.chatroom.model.ChatRoomMessage;
+import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomData;
+import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomResultData;
+import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.yb.livewy.bean.ChatRoomCustomMsg;
+import com.yb.livewy.bean.ChatRoomMsg;
 import com.yb.livewy.bean.LiveRtmpUrl;
 import com.yb.livewy.net.Result;
 import com.yb.livewy.net.RetrofitClient;
@@ -17,6 +31,7 @@ import com.yb.livewy.util.NetConstant;
 import com.yb.livewy.util.ToastUtil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MediaType;
@@ -32,7 +47,12 @@ public class LiveStreamViewModel extends AndroidViewModel {
 
     private MutableLiveData<LiveRtmpUrl> liveRtmpUrlLiveData = new MutableLiveData<>();
 
+    private static final String TAG = "LiveStreamViewModel";
+
     private MutableLiveData<Boolean> isLiveing = new MutableLiveData<>();
+
+    private MutableLiveData<Integer> exitLiveLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<ChatRoomMsg>> chatMessageLiveData = new MutableLiveData<>();
 
     public LiveStreamViewModel(@NonNull Application application) {
         super(application);
@@ -52,6 +72,14 @@ public class LiveStreamViewModel extends AndroidViewModel {
         return liveRtmpUrlLiveData;
     }
 
+    public MutableLiveData<List<ChatRoomMsg>> getChatMessageLiveData() {
+        return chatMessageLiveData;
+    }
+
+    public MutableLiveData<Integer> getExitLiveLiveData() {
+        return exitLiveLiveData;
+    }
+
     //开始直播，提交参数
     public void startLive(boolean isUploadCover, String filePath,String title){
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//表单类型
@@ -66,7 +94,6 @@ public class LiveStreamViewModel extends AndroidViewModel {
                 builder.addFormDataPart("file",file.getName(),body); //添加图片数据，body创建的请求体
             }
         }
-
         builder.addFormDataPart("channel_id","1");
         builder.addFormDataPart("name",title);
         List<MultipartBody.Part> parts=builder.build().parts();
@@ -142,6 +169,94 @@ public class LiveStreamViewModel extends AndroidViewModel {
                 }
             });
     }
+
+
+    //加入聊天室
+
+    public void loginChatRoom(){
+        // roomId 表示聊天室ID
+        EnterChatRoomData data = new EnterChatRoomData(liveRtmpUrlLiveData.getValue().getRoom_id()+"");
+        // 重试3次
+        NIMClient.getService(ChatRoomService.class).enterChatRoomEx(data, 3).setCallback(new RequestCallback<EnterChatRoomResultData>() {
+            @Override
+            public void onSuccess(EnterChatRoomResultData result) {
+                // 登录成功
+                try{
+                    Log.d(TAG, "onSuccess: 登陆成功");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailed(int code) {
+                // 登录失败
+            }
+
+            @Override
+            public void onException(Throwable exception) {
+                // 错误
+            }
+        });
+    }
+    //退出聊天室
+    public void exitChatRoom(){
+        NIMClient.getService(ChatRoomService.class).exitChatRoom(liveRtmpUrlLiveData.getValue().getRoom_id()+"");
+    }
+
+    //发送下播信息
+    public void exitLive(){
+        MsgAttachment msgAttachment = new MsgAttachment() {
+            @Override
+            public String toJson(boolean send) {
+                ChatRoomCustomMsg chatRoomCustomMsg = new ChatRoomCustomMsg(NetConstant.EXIT_LIVE_MESSAGE,100,new ChatRoomCustomMsg.MsgData());
+
+                return new Gson().toJson(chatRoomCustomMsg);
+            }
+        };
+        ChatRoomMessage exitMsg = ChatRoomMessageBuilder.createChatRoomCustomMessage(liveRtmpUrlLiveData.getValue().getRoom_id()+"",msgAttachment);
+        NIMClient.getService(ChatRoomService.class).sendMessage(exitMsg, true)
+                .setCallback(new RequestCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void param) {
+                        // 成功
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        // 失败
+                    }
+
+                    @Override
+                    public void onException(Throwable exception) {
+                        // 错误
+                    }
+                });
+    }
+
+    public void observerChatRoomMessage(){
+        NIMClient.getService(ChatRoomServiceObserver.class)
+                .observeReceiveMessage(new Observer<List<ChatRoomMessage>>() {
+                    @Override
+                    public void onEvent(List<ChatRoomMessage> chatRoomMessages) {
+
+                        List<ChatRoomMsg> chatRoomMsgs = new ArrayList<>();
+                        chatRoomMsgs.clear();
+                        for (int i = 0; i < chatRoomMessages.size(); i++) {
+                            MsgAttachment attachment = chatRoomMessages.get(i).getAttachment();
+                            ChatRoomCustomMsg chatMsg = new Gson().fromJson(attachment.toJson(true),ChatRoomCustomMsg.class);
+                            if (chatMsg.getCode() == NetConstant.REQUEST_SUCCESS_CODE){
+                                chatRoomMsgs.add(new ChatRoomMsg(chatMsg.getData().getChatAccount(),chatMsg.getData().getUsername(),chatMsg.getData().getConnect(),chatMsg.getData().getLevel(),chatMsg.getData().getUserType()));
+                            }else if (chatMsg.getCode() == NetConstant.EXIT_LIVE){
+                                exitLiveLiveData.setValue(100);
+                                break;
+                            }
+                        }
+                        chatMessageLiveData.setValue(chatRoomMsgs);
+                    }
+                }, true);
+    }
+
 }
 
 
