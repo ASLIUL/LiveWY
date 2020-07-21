@@ -10,9 +10,11 @@
             type="com.yb.livewy.vm.LiveStreamViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/activity_live_stream_ui_xml_constraintlayout_scene">
 
         <RelativeLayout
             android:id="@+id/netease_layout"
@@ -23,23 +25,23 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            >
+            app:layout_constraintVertical_bias="0.5">
+
             <com.netease.vcloud.video.render.NeteaseView
                 android:id="@+id/netease_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible"
-                />
+                android:visibility="visible" />
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             app:layout_constraintBottom_toTopOf="@+id/title"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1"
             tools:ignore="MissingConstraints">
 
@@ -63,7 +65,6 @@
                 android:textColor="@color/white"
                 android:visibility="@{!data.isLiveing ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
-
 
 
         <include
@@ -113,31 +114,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintGuide_percent="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"  />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chat_recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline5"
+            app:layout_constraintBottom_toTopOf="@id/start_live"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline4"
-            app:layout_constraintVertical_bias="1.0"
-            tools:ignore="MissingConstraints"
-            tools:itemCount="11"
-            />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.9"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"  />
+            app:layout_constraintVertical_bias="0.9"
+            tools:ignore="MissingConstraints" />
 
 
         <View
@@ -150,8 +138,8 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.9"
+            app:layout_constraintVertical_bias="0.95"
             tools:ignore="MissingConstraints" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

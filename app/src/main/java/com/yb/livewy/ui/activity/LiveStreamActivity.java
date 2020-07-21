@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -113,7 +114,7 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
         linearLayoutManager.setStackFromEnd(true);
         binding.chatRecycler.setLayoutManager(linearLayoutManager);
         livePlayerRecyclerAdapter = new LivePlayerRecyclerAdapter(context,chatMessageBeans);
-
+        binding.chatRecycler.setAdapter(livePlayerRecyclerAdapter);
     }
 
     @Override
@@ -138,6 +139,7 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
 
         viewModel.getChatMessageLiveData().observe(this,chatRoomMsgs -> {
             if (chatRoomMsgs!=null){
+                Log.d(TAG, "initViewListener: "+chatRoomMsgs.size());
                 this.chatMessageBeans.addAll(chatRoomMsgs);
                 livePlayerRecyclerAdapter.notifyDataSetChanged();
                 binding.chatRecycler.smoothScrollToPosition(this.chatMessageBeans.size()-1);
@@ -161,13 +163,13 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
     public void onClick(View v) {
         if (v.getId() == R.id.start_live){
             if (isStartLive){
+                binding.constraintLayout.transitionToStart();
                 //说明已经开始直播了
                 titleAction.setIsLiveStreaming(true);
                 liveStreamPanel.stopLive();
                 isStartLive = false;
                 viewModel.setIsLiveing(isStartLive);
                 viewModel.exitLive();
-                viewModel.exitChatRoom();
                 viewModel.closeLive();
                 return;
             }else {
@@ -187,12 +189,13 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                 viewModel.setIsLiveing(isStartLive);
                 binding.startLive.setFocusable(false);
                 binding.startLive.setEnabled(false);
+                binding.constraintLayout.transitionToEnd();
             }else {
                 viewModel.startLive(false,"",titleAction.getLiveTitle());
                 isStartLive = true;
                 viewModel.setIsLiveing(isStartLive);
+                binding.constraintLayout.transitionToEnd();
             }
-
         }else if (v.getId() == R.id.live_cover){
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");

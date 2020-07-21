@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
@@ -19,6 +20,7 @@ import com.netease.nimlib.sdk.chatroom.ChatRoomServiceObserver;
 import com.netease.nimlib.sdk.chatroom.model.ChatRoomMessage;
 import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomData;
 import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomResultData;
+import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.yb.livewy.bean.ChatRoomCustomMsg;
 import com.yb.livewy.bean.ChatRoomMsg;
@@ -199,22 +201,12 @@ public class LiveStreamViewModel extends AndroidViewModel {
             }
         });
     }
-    //退出聊天室
-    public void exitChatRoom(){
-        NIMClient.getService(ChatRoomService.class).exitChatRoom(liveRtmpUrlLiveData.getValue().getRoom_id()+"");
-    }
 
     //发送下播信息
     public void exitLive(){
-        MsgAttachment msgAttachment = new MsgAttachment() {
-            @Override
-            public String toJson(boolean send) {
-                ChatRoomCustomMsg chatRoomCustomMsg = new ChatRoomCustomMsg(NetConstant.EXIT_LIVE_MESSAGE,100,new ChatRoomCustomMsg.MsgData());
-
-                return new Gson().toJson(chatRoomCustomMsg);
-            }
-        };
-        ChatRoomMessage exitMsg = ChatRoomMessageBuilder.createChatRoomCustomMessage(liveRtmpUrlLiveData.getValue().getRoom_id()+"",msgAttachment);
+        ChatRoomCustomMsg chatRoomCustomMsg = new ChatRoomCustomMsg(NetConstant.EXIT_LIVE_MESSAGE,100,new ChatRoomCustomMsg.MsgData());
+        String msgJson = new Gson().toJson(chatRoomCustomMsg);
+        ChatRoomMessage exitMsg = ChatRoomMessageBuilder.createChatRoomTextMessage(liveRtmpUrlLiveData.getValue().getRoom_id()+"",msgJson);
         NIMClient.getService(ChatRoomService.class).sendMessage(exitMsg, true)
                 .setCallback(new RequestCallback<Void>() {
                     @Override
@@ -239,12 +231,14 @@ public class LiveStreamViewModel extends AndroidViewModel {
                 .observeReceiveMessage(new Observer<List<ChatRoomMessage>>() {
                     @Override
                     public void onEvent(List<ChatRoomMessage> chatRoomMessages) {
-
+                        if (chatRoomMessages==null || chatRoomMessages.isEmpty()){
+                            return;
+                        }
                         List<ChatRoomMsg> chatRoomMsgs = new ArrayList<>();
                         chatRoomMsgs.clear();
                         for (int i = 0; i < chatRoomMessages.size(); i++) {
-                            MsgAttachment attachment = chatRoomMessages.get(i).getAttachment();
-                            ChatRoomCustomMsg chatMsg = new Gson().fromJson(attachment.toJson(true),ChatRoomCustomMsg.class);
+                            ChatRoomCustomMsg chatMsg = new Gson().fromJson(chatRoomMessages.get(i).getContent(),ChatRoomCustomMsg.class);
+                            Log.d(TAG, "onEvent: "+chatMsg.toString());
                             if (chatMsg.getCode() == NetConstant.REQUEST_SUCCESS_CODE){
                                 chatRoomMsgs.add(new ChatRoomMsg(chatMsg.getData().getChatAccount(),chatMsg.getData().getUsername(),chatMsg.getData().getConnect(),chatMsg.getData().getLevel(),chatMsg.getData().getUserType()));
                             }else if (chatMsg.getCode() == NetConstant.EXIT_LIVE){
@@ -252,6 +246,7 @@ public class LiveStreamViewModel extends AndroidViewModel {
                                 break;
                             }
                         }
+                        Log.d(TAG, "onEvent: 循环走完了");
                         chatMessageLiveData.setValue(chatRoomMsgs);
                     }
                 }, true);
