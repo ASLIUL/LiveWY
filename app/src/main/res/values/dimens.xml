@@ -21,6 +21,7 @@
     <dimen name="limit_size_10dp">10dp</dimen>
     <dimen name="limit_size_12dp">12dp</dimen>
     <dimen name="limit_size_15dp">15dp</dimen>
+    <dimen name="limit_size_16dp">16dp</dimen>
     <dimen name="limit_size_20dp">20dp</dimen>
     <dimen name="limit_size_25dp">25dp</dimen>
     <dimen name="limit_size_18dp">18dp</dimen>
@@ -49,6 +50,8 @@
     <dimen name="limit_size_220dp">220dp</dimen>
     <dimen name="limit_size_240dp">240dp</dimen>
     <dimen name="limit_size_265dp">265dp</dimen>
+    <dimen name="limit_size_270dp">270dp</dimen>
+    <dimen name="limit_size_280dp">280dp</dimen>
     <dimen name="limit_size_300dp">300dp</dimen>
     <dimen name="limit_size_400dp">400dp</dimen>
     <dimen name="limit_size_420dp">420dp</dimen>

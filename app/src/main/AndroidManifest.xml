@@ -51,6 +51,17 @@
             android:configChanges="orientation|keyboardHidden|screenSize">
 
         </activity>
+        <activity android:name=".ui.activity.LivePlayerBottomInputActivity"
+            android:theme="@style/liveInputPanel"
+            android:configChanges="keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustPan|stateHidden"
+            />
+        <activity android:name=".ui.activity.ShareLiveActivity"
+            android:theme="@style/shareLive"
+            android:configChanges="keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustPan|stateHidden"
+            />
+
 
     </application>
     <!-- 声明程序使用OpenGL ES 2.0 -->

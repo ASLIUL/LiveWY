@@ -116,6 +116,21 @@ public class SaveUserData {
         return sharedPreferences.getString("phone","");
     }
 
+    public  void saveUserName(String name){
+        if (editor==null){
+            editor = context.getSharedPreferences("user",0).edit();
+        }
+        editor.putString("username",name);
+        editor.apply();
+        editor.commit();
+    }
+    public String getUserName(){
+        if (sharedPreferences == null){
+            sharedPreferences = context.getSharedPreferences("user",0);
+        }
+        return sharedPreferences.getString("username","");
+    }
+
     public  void saveLiveStatus(int status){
         if (editor==null){
             editor = context.getSharedPreferences("user",0).edit();

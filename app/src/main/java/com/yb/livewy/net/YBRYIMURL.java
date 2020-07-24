@@ -26,6 +26,9 @@ public class YBRYIMURL {
     //关闭直播间
     public static final String closeLive = "live/video/modifyLiveStauts";
 
+    //获取好友列表
+    public static final String getFriendsList = "live/api/link/findLinkUser";
+
 
 
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:bl_corners_radius="@dimen/limit_size_10dp"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/cancel_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_marginStart="@dimen/limit_size_10dp"
+            android:layout_marginTop="@dimen/limit_size_10dp" />
+
+        <TextView
+            android:id="@+id/send_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/limit_size_10dp"
+            android:layout_marginEnd="@dimen/limit_size_10dp" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/limit_size_05dp"
+            android:background="@color/view_dividing_line"
+            android:layout_below="@id/send_share"
+            android:layout_marginTop="@dimen/limit_size_10dp" />
+
+        <LinearLayout
+            android:id="@+id/sure_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/limit_size_60dp"
+            android:orientation="horizontal"
+            app:bl_corners_radius="@dimen/limit_size_2dp"
+            app:bl_solid_color="@color/white"
+            android:layout_below="@id/view">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/choose_recycler"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <EditText
+                android:id="@+id/search_connect"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/search"
+                android:paddingLeft="@dimen/limit_size_10dp" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/limit_size_05dp"
+            android:background="@color/view_dividing_line"
+            android:layout_below="@id/sure_line"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contacts_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/limit_size_20dp"
+            android:layout_below="@id/sure_line" />
+
+    </RelativeLayout>
+</layout>

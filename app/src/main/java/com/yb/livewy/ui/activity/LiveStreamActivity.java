@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +20,6 @@ import com.yb.livewy.R;
 import com.yb.livewy.bean.ChatRoomMsg;
 import com.yb.livewy.bean.Filter;
 import com.yb.livewy.bean.MessageEvent;
-import com.yb.livewy.bean.PublishParam;
 import com.yb.livewy.bean.YBZBIMEnum;
 import com.yb.livewy.databinding.ActivityLiveStreamUiBinding;
 import com.yb.livewy.ui.adapter.LivePlayerRecyclerAdapter;
@@ -76,9 +74,6 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
         binding.setData(viewModel);
         binding.setLifecycleOwner(this);
         binding.title.setLifecycleOwner(this);
-//        FuVideoEffect fuVideoEffect = new FuVideoEffect();
-//        boolean isInit = fuVideoEffect.filterInit(getApplicationContext());
-//        Log.d(TAG, "initData: "+isInit);
         PermissionX.init(this)
                 .permissions(
                         Manifest.permission.CAMERA,
@@ -121,6 +116,7 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
     protected void initViewListener() {
         binding.startLive.setOnClickListener(this);
         binding.title.liveCover.setOnClickListener(this);
+        binding.inputPanel.setOnClickListener(this);
         viewModel.getLiveRtmpUrlLiveData().observe(this,liveRtmpUrl -> {
             if (liveRtmpUrl!=null){
                 if (!TextUtils.isEmpty(liveRtmpUrl.getCover_img())){
@@ -131,6 +127,7 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                     liveStreamPanel.init(liveRtmpUrl.getPushUrl());
                     liveStreamPanel.initLive();
                     viewModel.loginChatRoom();
+                    leftPanel.setLiveRtmpUrl(liveRtmpUrl);
                     binding.startLive.setFocusable(true);
                     binding.startLive.setEnabled(true);
                 }
@@ -139,16 +136,9 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
 
         viewModel.getChatMessageLiveData().observe(this,chatRoomMsgs -> {
             if (chatRoomMsgs!=null){
-                Log.d(TAG, "initViewListener: "+chatRoomMsgs.size());
                 this.chatMessageBeans.addAll(chatRoomMsgs);
                 livePlayerRecyclerAdapter.notifyDataSetChanged();
                 binding.chatRecycler.smoothScrollToPosition(this.chatMessageBeans.size()-1);
-            }
-        });
-        viewModel.getExitLiveLiveData().observe(this,code ->{
-            if (code == NetConstant.EXIT_LIVE){
-                //提示下播了
-                ToastUtil.showToast("下播了");
             }
         });
         viewModel.observerChatRoomMessage();
@@ -200,6 +190,10 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
             startActivityForResult(intent, GET_BY_ALBUM);
+        }else if (v.getId() == R.id.input_panel){
+            Intent intent = new Intent(this, LivePlayerBottomInputActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     }
 
@@ -256,8 +250,9 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
             }
             fuControlListener.onFilterLevelSelected((float) (progress)/100);
         }
-        if (messageEvent.getMessageType() == YBZBIMEnum.MessageType.BEAUTYSTRENGTH){
-
+        if (messageEvent.getMessageType() == YBZBIMEnum.MessageType.CHATROOMSENDMSG){
+            String msg = (String) messageEvent.getObject();
+            viewModel.sendMsg(msg);
         }
     }
 

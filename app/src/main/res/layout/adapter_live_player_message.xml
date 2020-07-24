@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="@dimen/limit_size_5dp"
-    android:layout_margin="@dimen/limit_size_10dp"
+    android:layout_margin="@dimen/limit_size_5dp"
     app:bl_corners_radius="@dimen/limit_size_10dp"
     app:bl_solid_color="@color/live_icon_bg"
     >

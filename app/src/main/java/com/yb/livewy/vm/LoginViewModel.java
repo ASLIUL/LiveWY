@@ -89,6 +89,7 @@ public class LoginViewModel extends AndroidViewModel {
                 try {
                     Result<LoginUser> result = response.body();
                     if (result.getCode() == NetConstant.REQUEST_SUCCESS_CODE){
+                        Log.d(TAG, "onResponse: "+result.getData().toString());
                         LoginInfo info = new LoginInfo(result.getData().getAccid(), result.getData().getImToken(),NetConstant.IM_APP_KEY);
                         SaveUserData.getInstance(getApplication()).saveUserId(result.getData().getId()+"");
                         RequestCallback<LoginInfo> loginInfoRequestCallback = new RequestCallback<LoginInfo>() {
@@ -100,6 +101,7 @@ public class LoginViewModel extends AndroidViewModel {
                                 SaveUserData.getInstance(getApplication()).saveUserPhone(userName.getValue());
                                 SaveUserData.getInstance(getApplication()).saveUserId(result.getData().getId()+"");
                                 SaveUserData.getInstance(getApplication()).saveUserToken(result.getData().getToken()+"");
+                                SaveUserData.getInstance(getApplication()).saveUserName(result.getData().getName());
                                 ToastUtil.showToast(NetConstant.IM_LOGIN_SUCCESS);
                                 handler.sendEmptyMessage(1);
 

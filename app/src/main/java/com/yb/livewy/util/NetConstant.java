@@ -125,11 +125,23 @@ public class NetConstant {
 
     public static final int TOKEN_CODE = 400000;
 
+    public static final String TOKEN_FAILED = "登录失效，请重新登录";
+
     public static final String COVER_FAILED = "封面加载错误，请重新选择";
 
     public static final String NOT_INPUT_LIVE_TITLE = "请输入直播间标题";
 
     public static final String EXIT_LIVE_MESSAGE = "下播";
+
+    public static final String NOT_INPUT_SOMETHING = "不可以发送空消息哦";
+
+    public static final String CHAT_ROOM_TEXT_MESSAGE = "聊天室文本消息";
+
+    public static final String CUSTOM_SHARE_LIVE_MESSAGE = "直播间分享消息";
+
+    public static final String SHARE_DONE = "分享完成";
+
+    public static final String START_LIVE_CAN_SHARE = "开始直播后才可以分享哦";
 
 
 

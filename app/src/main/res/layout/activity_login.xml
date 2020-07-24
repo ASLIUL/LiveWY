@@ -223,15 +223,16 @@
             android:id="@+id/forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/forgot_password"
             android:clickable="true"
             android:onClick="@{()->data.goToRegister()}"
+            android:text="@string/forgot_password"
+            android:textColor="@color/forgot_password_color"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/login"
-            android:textColor="@color/forgot_password_color"
             app:layout_constraintVertical_bias="1.0" />
 
 

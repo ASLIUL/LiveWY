@@ -2,6 +2,7 @@ package com.yb.livewy.net;
 
 import com.google.gson.JsonObject;
 import com.yb.livewy.bean.ChatAccount;
+import com.yb.livewy.bean.FriendsInfoBean;
 import com.yb.livewy.bean.LiveRtmpUrl;
 import com.yb.livewy.bean.LoginUser;
 import com.yb.livewy.bean.RTMP;
@@ -56,5 +57,8 @@ public interface UserApi {
     @Headers({"Content-Type: application/json"})
     @PUT(YBRYIMURL.closeLive)
     Call<Result> closeLive(@Query("id") int id);
+
+    @GET(YBRYIMURL.getFriendsList)
+    Call<Result<FriendsInfoBean>> getMyFriends(@Query("pageNo")int pageNo, @Query("pageSize")int pageSize);
 
 }

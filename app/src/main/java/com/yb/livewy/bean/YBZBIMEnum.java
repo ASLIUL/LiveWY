@@ -56,7 +56,9 @@ public class YBZBIMEnum {
         UPDATEFILTERTYPE("更改滤镜",18),
         CHOOSEFILTER("选择的滤镜",19),
         FILTERSTRENGTH("滤镜强度",20),
-        BEAUTYSTRENGTH("美颜强度",21);
+        BEAUTYSTRENGTH("美颜强度",21),
+        CHATROOMSENDMSG("聊天室发消息",22),
+        LIVESHARECHOOSEPEOPLE("分享直播选择的好友",23);
 
 
         private String typeName;

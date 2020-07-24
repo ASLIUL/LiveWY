@@ -82,7 +82,8 @@
             android:id="@+id/left"
             layout="@layout/live_stream_left_layout"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/limit_size_240dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="1"
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.95"
@@ -112,7 +113,7 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintGuide_percent="0.6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -140,6 +141,27 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.95"
             tools:ignore="MissingConstraints" />
+        
+        <TextView
+            android:id="@+id/input_panel"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/limit_size_30dp"
+            android:text="@string/say_thing"
+            android:layout_marginStart="@dimen/limit_size_80dp"
+            android:layout_marginEnd="@dimen/limit_size_50dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="1"
+            android:textColor="@color/gray"
+            android:gravity="center"
+            android:paddingLeft="@dimen/limit_size_10dp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:bl_corners_radius="@dimen/limit_size_15dp"
+            app:bl_solid_color="@color/live_icon_bg"
+            />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

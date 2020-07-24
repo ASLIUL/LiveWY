@@ -38,7 +38,7 @@ public class LivePlayerRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
         MessageViewHolder viewHolder = (MessageViewHolder) holder;
         try {
             viewHolder.msgConnect.setText(chatRoomMsgs.get(position).getChatConnect());
-            viewHolder.name.setText(chatRoomMsgs.get(position).getUserName());
+            viewHolder.name.setText(chatRoomMsgs.get(position).getUserName()+" : ");
         }catch (Exception e){
             e.printStackTrace();
         }

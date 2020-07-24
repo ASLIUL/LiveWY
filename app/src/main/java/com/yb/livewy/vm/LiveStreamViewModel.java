@@ -30,6 +30,7 @@ import com.yb.livewy.net.RetrofitClient;
 import com.yb.livewy.net.UserApi;
 import com.yb.livewy.ui.activity.LoginActivity;
 import com.yb.livewy.util.NetConstant;
+import com.yb.livewy.util.SaveUserData;
 import com.yb.livewy.util.ToastUtil;
 
 import java.io.File;
@@ -172,6 +173,51 @@ public class LiveStreamViewModel extends AndroidViewModel {
             });
     }
 
+    //发送消息
+    public void sendMsg(String msgConnect) {
+
+        if (TextUtils.isEmpty(msgConnect)){
+            ToastUtil.showToast(NetConstant.NOT_INPUT_SOMETHING);
+            return;
+        }
+
+
+        ChatRoomCustomMsg chatRoomCustomMsg = new ChatRoomCustomMsg(
+                NetConstant.CHAT_ROOM_TEXT_MESSAGE,
+                NetConstant.REQUEST_SUCCESS_CODE,
+                new ChatRoomCustomMsg.MsgData(
+                        msgConnect,
+                        SaveUserData.getInstance(getApplication()).getUserName(),
+                        SaveUserData.getInstance(getApplication()).getUserId(),
+                        SaveUserData.getInstance(getApplication()).getUserAccid(),
+                        1,
+                        1
+                ));
+
+        String msgJson = new Gson().toJson(chatRoomCustomMsg);
+
+        ChatRoomMessage message = ChatRoomMessageBuilder.createChatRoomTextMessage(liveRtmpUrlLiveData.getValue().getRoom_id()+"", msgJson);
+        // 将文本消息发送出去
+        NIMClient.getService(ChatRoomService.class).sendMessage(message, true)
+                .setCallback(new RequestCallback<Void>() {
+                    @Override
+                    public void onSuccess(Void param) {
+                        List<ChatRoomMsg> chatRoomMsgs = new ArrayList<>();
+                        chatRoomMsgs.add(new ChatRoomMsg(chatRoomCustomMsg.getData().getChatAccount(),chatRoomCustomMsg.getData().getUsername(),chatRoomCustomMsg.getData().getConnect(),chatRoomCustomMsg.getData().getLevel(),chatRoomCustomMsg.getData().getUserType()));
+                        chatMessageLiveData.setValue(chatRoomMsgs);
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        // 失败
+                    }
+
+                    @Override
+                    public void onException(Throwable exception) {
+                        // 错误
+                    }
+                });
+    }
 
     //加入聊天室
 
@@ -238,15 +284,8 @@ public class LiveStreamViewModel extends AndroidViewModel {
                         chatRoomMsgs.clear();
                         for (int i = 0; i < chatRoomMessages.size(); i++) {
                             ChatRoomCustomMsg chatMsg = new Gson().fromJson(chatRoomMessages.get(i).getContent(),ChatRoomCustomMsg.class);
-                            Log.d(TAG, "onEvent: "+chatMsg.toString());
-                            if (chatMsg.getCode() == NetConstant.REQUEST_SUCCESS_CODE){
-                                chatRoomMsgs.add(new ChatRoomMsg(chatMsg.getData().getChatAccount(),chatMsg.getData().getUsername(),chatMsg.getData().getConnect(),chatMsg.getData().getLevel(),chatMsg.getData().getUserType()));
-                            }else if (chatMsg.getCode() == NetConstant.EXIT_LIVE){
-                                exitLiveLiveData.setValue(100);
-                                break;
-                            }
+                            chatRoomMsgs.add(new ChatRoomMsg(chatMsg.getData().getChatAccount(),chatMsg.getData().getUsername(),chatMsg.getData().getConnect(),chatMsg.getData().getLevel(),chatMsg.getData().getUserType()));
                         }
-                        Log.d(TAG, "onEvent: 循环走完了");
                         chatMessageLiveData.setValue(chatRoomMsgs);
                     }
                 }, true);

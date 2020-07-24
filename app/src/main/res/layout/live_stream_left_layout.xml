@@ -112,6 +112,31 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/limit_size_25dp"
+                android:layout_height="@dimen/limit_size_25dp"
+                android:src="@drawable/ic_shop_white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/shop"
+                android:textSize="@dimen/font_size_10sp"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/limit_size_5dp"
+                />
+
+        </LinearLayout>
+
 
 
 

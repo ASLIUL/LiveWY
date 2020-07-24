@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="@dimen/limit_size_200dp"
+    android:layout_height="wrap_content"
+    app:bl_corners_radius="@dimen/limit_size_10dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tips"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/limit_size_10dp"
+        android:layout_marginBottom="@dimen/limit_size_10dp"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/limit_size_05dp"
+        android:background="@color/view_dividing_line"
+        />
+
+    <TextView
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="正在发送第1/3条"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/limit_size_20dp"
+        android:layout_marginBottom="@dimen/limit_size_30dp"
+        />
+</LinearLayout>

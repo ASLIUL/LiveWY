@@ -14,6 +14,7 @@ public class LoginUser {
     private int id;
     private String imToken;
     private String qrCodeUrl;
+    private String name;
 
     public String getToken() {
         return token;
@@ -55,14 +56,23 @@ public class LoginUser {
         this.qrCodeUrl = qrCodeUrl;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
-        return "LoginUser{" +
+        return "{" +
                 "token='" + token + '\'' +
                 ", accid='" + accid + '\'' +
                 ", id=" + id +
                 ", imToken='" + imToken + '\'' +
                 ", qrCodeUrl='" + qrCodeUrl + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

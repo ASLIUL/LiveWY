@@ -1,6 +1,8 @@
 package com.yb.livewy.bean;
 
-public class LiveRtmpUrl {
+import java.io.Serializable;
+
+public class LiveRtmpUrl implements Serializable {
 
 
     /**
