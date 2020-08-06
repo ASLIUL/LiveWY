@@ -128,6 +128,7 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                     liveStreamPanel.initLive();
                     viewModel.loginChatRoom();
                     leftPanel.setLiveRtmpUrl(liveRtmpUrl);
+                    leftPanel.setLiveStreaming(isStartLive);
                     binding.startLive.setFocusable(true);
                     binding.startLive.setEnabled(true);
                 }
@@ -161,6 +162,7 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                 viewModel.setIsLiveing(isStartLive);
                 viewModel.exitLive();
                 viewModel.closeLive();
+                leftPanel.setLiveStreaming(isStartLive);
                 return;
             }else {
                 titleAction.setIsLiveStreaming(false);
