@@ -337,42 +337,46 @@ public class LiveStreamPanel implements lsMessageHandler {
     }
 
     public void onDestroy(){
-        appCompatActivity.unregisterReceiver(messageReceiver);
-        appCompatActivity.unregisterReceiver(audioMixVolumeMessageReceiver);
-        if (fuRenderer!=null){
-            fuRenderer.onSurfaceDestroyed();
-        }
-        if (capture!=null && liveStreamingOn){
-            stopLive();
-            if (startVideoCamera){
-                //关闭相机预览
-                capture.stopVideoPreview();
-                //滤镜等记得在这里释放资源
-                capture.destroyVideoPreview();
+        try {
+            appCompatActivity.unregisterReceiver(messageReceiver);
+            appCompatActivity.unregisterReceiver(audioMixVolumeMessageReceiver);
+            if (fuRenderer!=null){
+                fuRenderer.onSurfaceDestroyed();
             }
-            //反初始化推流实例，当他与stopLiveStreaming连续调用时，参数为false
-            capture.uninitLsMediaCapture(false);
-            capture = null;
+            if (capture!=null && liveStreamingOn){
+                stopLive();
+                if (startVideoCamera){
+                    //关闭相机预览
+                    capture.stopVideoPreview();
+                    //滤镜等记得在这里释放资源
+                    capture.destroyVideoPreview();
+                }
+                //反初始化推流实例，当他与stopLiveStreaming连续调用时，参数为false
+                capture.uninitLsMediaCapture(false);
+                capture = null;
 
-            intentLiveStreamingStopFinished.putExtra("LiveStreamingStopFinished",2);
-            appCompatActivity.sendBroadcast(intentLiveStreamingStopFinished);
-        }else if (capture != null && startVideoCamera ){
-            capture.stopVideoPreview();
-            capture.destroyVideoPreview();
-            capture.uninitLsMediaCapture(true);
-            capture = null;
-            intentLiveStreamingStopFinished.putExtra("LiveStreamingStopFinished",1);
-            appCompatActivity.sendBroadcast(intentLiveStreamingStopFinished);
-        }else if (!liveStreamingInitFinished){
-            intentLiveStreamingStopFinished.putExtra("LiveStreamingStopFinished",1);
-            appCompatActivity.sendBroadcast(intentLiveStreamingStopFinished);
+                intentLiveStreamingStopFinished.putExtra("LiveStreamingStopFinished",2);
+                appCompatActivity.sendBroadcast(intentLiveStreamingStopFinished);
+            }else if (capture != null && startVideoCamera ){
+                capture.stopVideoPreview();
+                capture.destroyVideoPreview();
+                capture.uninitLsMediaCapture(true);
+                capture = null;
+                intentLiveStreamingStopFinished.putExtra("LiveStreamingStopFinished",1);
+                appCompatActivity.sendBroadcast(intentLiveStreamingStopFinished);
+            }else if (!liveStreamingInitFinished){
+                intentLiveStreamingStopFinished.putExtra("LiveStreamingStopFinished",1);
+                appCompatActivity.sendBroadcast(intentLiveStreamingStopFinished);
 
-            //
-            capture.uninitLsMediaCapture(true);
-        }
+                //
+                capture.uninitLsMediaCapture(true);
+            }
 
-        if (liveStreamingOn){
-            liveStreamingOn = false;
+            if (liveStreamingOn){
+                liveStreamingOn = false;
+            }
+        }catch (Exception e){
+
         }
     }
 

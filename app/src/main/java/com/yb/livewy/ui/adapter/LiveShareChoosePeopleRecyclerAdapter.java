@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,9 +55,11 @@ public class LiveShareChoosePeopleRecyclerAdapter extends RecyclerView.Adapter<L
 
         public ImageView header;
 
+
         public PeopleViewHolder(@NonNull View itemView) {
             super(itemView);
             header = itemView.findViewById(R.id.header);
+
         }
     }
 }

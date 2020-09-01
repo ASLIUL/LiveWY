@@ -25,6 +25,7 @@ import com.netease.nimlib.sdk.NIMClient;
 import com.yb.livewy.R;
 import com.yb.livewy.bean.MessageEvent;
 import com.yb.livewy.util.AppCompatActivityControls;
+import com.yb.livewy.util.SaveUserData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,7 +76,6 @@ public abstract class BaseAppActivity<T extends ViewDataBinding, Y extends ViewM
     @Override
     protected void onStart() {
         super.onStart();
-
         EventBus.getDefault().register(this);
     }
 
@@ -187,6 +187,12 @@ public abstract class BaseAppActivity<T extends ViewDataBinding, Y extends ViewM
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void TestData(MessageEvent event) {
 
+    }
+
+    public void offline(boolean loginStatue){
+        if (loginStatue){
+            startActivity(new Intent(this,LoginActivity.class));
+        }
     }
 
     @Override

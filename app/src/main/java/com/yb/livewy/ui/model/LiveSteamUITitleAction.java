@@ -80,11 +80,9 @@ public class LiveSteamUITitleAction implements View.OnClickListener {
 
     public void setIsLiveStreaming(boolean isLiveStreaming){
         if (isLiveStreaming){
-            cover.setOnClickListener(null);
             msgConnect.setFocusable(false);
             msgConnect.setEnabled(false);
         }else {
-            cover.setOnClickListener(this);
             msgConnect.setFocusable(true);
             msgConnect.setEnabled(true);
         }

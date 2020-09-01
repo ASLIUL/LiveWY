@@ -34,11 +34,14 @@ public class NetConstant {
 
     public final static int EXIT_LIVE = 100;
 
-    public static final String IM_LOGIN_FAILED = "聊天登陆失败";
-    public static final String IM_LOGIN_SUCCESS = "聊天登陆成功";
+    public static final String IM_LOGIN_FAILED = "登陆失败";
+    public static final String IM_LOGIN_SUCCESS = "登陆成功";
     public static final String IM_APP_KEY = "5c35b9162148f25b125e4af2d052134d";
 
     public static final String PARAM_ERROR = "参数错误";
+
+    public static final int PERMISSION_DENIED = 100022;
+    public static final String PERMISSION_DENIED_TIPS = "权限不足，不可以直播哦";
 
     /**
      * 正则校验
@@ -142,6 +145,7 @@ public class NetConstant {
     public static final String SHARE_DONE = "分享完成";
 
     public static final String START_LIVE_CAN_SHARE = "开始直播后才可以分享哦";
+
 
 
 

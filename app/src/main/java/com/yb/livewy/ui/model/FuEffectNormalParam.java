@@ -116,7 +116,7 @@ public class FuEffectNormalParam {
         MICROCANTHUS("micro_canthus","眼角",sMicroCanthus, R.string.origin,R.drawable.ic_reset_white),
         MICROPHILTRUM("micro_philtrum","人中",sMicroPhiltrum, R.string.origin,R.drawable.ic_reset_white),
         MICROLONGNOSE("micro_long_nose","鼻子长度",sMicroLongNose, R.string.origin,R.drawable.ic_reset_white),
-        MICROEYESPACE("micro_eye_space","眼睛间距",sMicroEyeSpace, R.string.origin,R.drawable.ic_reset_white),
+        MICROEYESPACE("micro_eye_space","眼睛间距",sMicroEyeSpace, R.string.origin,R.drawable.ic_reset_w hite),
         MICROEYEROTATE("micro_eye_rotate","眼睛角度",sMicroEyeRotate, R.string.origin,R.drawable.ic_reset_white),
         CHEEKV("cheek_v","V脸",sCheekV, R.string.origin,R.drawable.ic_reset_white),
         CHECKNARROW("cheek_narrow","窄脸",sCheekNarrow, R.string.origin,R.drawable.ic_reset_white),

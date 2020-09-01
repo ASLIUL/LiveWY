@@ -6,7 +6,8 @@ package com.yb.livewy.net;
  **/
 public class YBRYIMURL {
 
-    public static final String BaseUrl = "http://192.168.0.103:9000/";
+    //public static final String BaseUrl = "http://192.168.0.103:9000/";
+    public static final String BaseUrl = "http://www.moo9995.com:9000/";
 
     //账号密码登陆
     public static final String login = "api/loginByPassword";

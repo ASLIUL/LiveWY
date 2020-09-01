@@ -176,22 +176,24 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
                     ToastUtil.showToast(NetConstant.UPLOADCOVER);
                     return;
                 }
-                viewModel.startLive(true,filePath,titleAction.getLiveTitle());
                 isStartLive = true;
+                viewModel.startLive(true,filePath,titleAction.getLiveTitle());
                 viewModel.setIsLiveing(isStartLive);
                 binding.startLive.setFocusable(false);
                 binding.startLive.setEnabled(false);
                 binding.constraintLayout.transitionToEnd();
             }else {
-                viewModel.startLive(false,"",titleAction.getLiveTitle());
                 isStartLive = true;
+                viewModel.startLive(false,"",titleAction.getLiveTitle());
                 viewModel.setIsLiveing(isStartLive);
                 binding.constraintLayout.transitionToEnd();
             }
         }else if (v.getId() == R.id.live_cover){
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            intent.setType("image/*");
-            startActivityForResult(intent, GET_BY_ALBUM);
+            if (!isStartLive){
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(intent, GET_BY_ALBUM);
+            }
         }else if (v.getId() == R.id.input_panel){
             Intent intent = new Intent(this, LivePlayerBottomInputActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -201,8 +203,10 @@ public class LiveStreamActivity extends BaseAppActivity<ActivityLiveStreamUiBind
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        filePath = PictureSelectUtils.onActivityResult(LiveStreamActivity.this,requestCode,resultCode,data,true,300,300,1,1);
+        filePath = PictureSelectUtils.onActivityResult(LiveStreamActivity.this,requestCode,resultCode,data,true,450,300,3,2);
         titleAction.setFileCover(filePath);
+        if (!TextUtils.isEmpty(filePath))
+            isUploadCover = true;
         super.onActivityResult(requestCode, resultCode, data);
     }
 

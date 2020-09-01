@@ -85,8 +85,12 @@ public class LiveStreamViewModel extends AndroidViewModel {
 
     //开始直播，提交参数
     public void startLive(boolean isUploadCover, String filePath,String title){
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//表单类型
+        if (isUploadCover && TextUtils.isEmpty(filePath)){
+            ToastUtil.showToast(NetConstant.UPLOADCOVER);
+            return;
+        }
 
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);//表单类型
         File file = new File(filePath);
         if (isUploadCover){
             if (!file.exists()){
@@ -100,21 +104,24 @@ public class LiveStreamViewModel extends AndroidViewModel {
         builder.addFormDataPart("channel_id","1");
         builder.addFormDataPart("name",title);
         List<MultipartBody.Part> parts=builder.build().parts();
-
+        Log.d(TAG, "startLive: 开始发出请求");
         Call<Result<LiveRtmpUrl>> call = userApi.getRTMPUrl(parts);
         call.enqueue(new Callback<Result<LiveRtmpUrl>>() {
             @Override
             public void onResponse(Call<Result<LiveRtmpUrl>> call, Response<Result<LiveRtmpUrl>> response) {
                 try {
+                    Log.d(TAG, "onResponse: 得到请求结果，开始解析");
                     Result<LiveRtmpUrl> result = response.body();
                     if (result.getCode() == NetConstant.REQUEST_SUCCESS_CODE){
-                        liveRtmpUrlLiveData.setValue(result.getData());
-                    }else if (result.getCode() == NetConstant.TOKEN_CODE){
+                        Log.d(TAG, "onResponse: code==200");
+                        liveRtmpUrlLiveData.postValue(result.getData());
+                    }else if (result.getCode() == NetConstant.TOKEN_CODE) {
                         ToastUtil.showToast(NetConstant.TOKEN_FILED);
                         Intent intent = new Intent(getApplication(), LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         getApplication().startActivity(intent);
                     }
+                    Log.d(TAG, "onResponse: 请求错误 code="+result.getCode());
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -123,6 +130,7 @@ public class LiveStreamViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<Result<LiveRtmpUrl>> call, Throwable t) {
                 ToastUtil.showToast(NetConstant.SERVICE_ERROR);
+                Log.d(TAG, "startLive: 请求失败");
             }
         });
     }

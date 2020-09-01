@@ -88,10 +88,10 @@ public class LoginViewModel extends AndroidViewModel {
             public void onResponse(Call<Result<LoginUser>> call, Response<Result<LoginUser>> response) {
                 try {
                     Result<LoginUser> result = response.body();
-                    if (result.getCode() == NetConstant.REQUEST_SUCCESS_CODE){
-                        Log.d(TAG, "onResponse: "+result.getData().toString());
-                        LoginInfo info = new LoginInfo(result.getData().getAccid(), result.getData().getImToken(),NetConstant.IM_APP_KEY);
-                        SaveUserData.getInstance(getApplication()).saveUserId(result.getData().getId()+"");
+                    if (result.getCode() == NetConstant.REQUEST_SUCCESS_CODE) {
+                        Log.d(TAG, "onResponse: " + result.getData().toString());
+                        LoginInfo info = new LoginInfo(result.getData().getAccid(), result.getData().getImToken(), NetConstant.IM_APP_KEY);
+                        SaveUserData.getInstance(getApplication()).saveUserId(result.getData().getId() + "");
                         RequestCallback<LoginInfo> loginInfoRequestCallback = new RequestCallback<LoginInfo>() {
                             @Override
                             public void onSuccess(LoginInfo param) {
@@ -99,24 +99,27 @@ public class LoginViewModel extends AndroidViewModel {
                                 SaveUserData.getInstance(getApplication()).saveUserImToken(param.getToken());
                                 SaveUserData.getInstance(getApplication()).saveUserPwd(password.getValue());
                                 SaveUserData.getInstance(getApplication()).saveUserPhone(userName.getValue());
-                                SaveUserData.getInstance(getApplication()).saveUserId(result.getData().getId()+"");
-                                SaveUserData.getInstance(getApplication()).saveUserToken(result.getData().getToken()+"");
+                                SaveUserData.getInstance(getApplication()).saveUserId(result.getData().getId() + "");
+                                SaveUserData.getInstance(getApplication()).saveUserToken(result.getData().getToken() + "");
                                 SaveUserData.getInstance(getApplication()).saveUserName(result.getData().getName());
                                 ToastUtil.showToast(NetConstant.IM_LOGIN_SUCCESS);
                                 handler.sendEmptyMessage(1);
 
                             }
+
                             @Override
                             public void onFailed(int code) {
-                                ToastUtil.showToast(NetConstant.IM_LOGIN_FAILED+code);
+                                ToastUtil.showToast(NetConstant.IM_LOGIN_FAILED + code);
                             }
 
                             @Override
                             public void onException(Throwable exception) {
-                                Log.d(TAG, "onException: "+exception.getMessage());
+                                Log.d(TAG, "onException: " + exception.getMessage());
                             }
                         };
                         NIMClient.getService(AuthService.class).login(info).setCallback(loginInfoRequestCallback);
+                    } else if (result.getCode() == NetConstant.PERMISSION_DENIED){
+                        ToastUtil.showToast(NetConstant.PERMISSION_DENIED_TIPS);
                     }else {
                         Message m = new Message();
                         m.obj = result.getMsg();
@@ -168,7 +171,7 @@ public class LoginViewModel extends AndroidViewModel {
                     }
                     break;
                 case 2:
-                    ToastUtil.showToast((String) msg.obj);
+                    ToastUtil.showToast((String) msg.obj+"::L");
                     break;
                 case 3:
                     ToastUtil.showToast("服务器异常");
